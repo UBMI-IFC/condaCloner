@@ -10,6 +10,7 @@ lo envia con **scp** a una carpeta en el directorio **home** del usuario en **UB
 ## Requerimientos
 
 R
+
 Rscript
 
 llaves ssh de los servidores hacia UBMIPORTAL (Temporal)
@@ -17,4 +18,4 @@ llaves ssh de los servidores hacia UBMIPORTAL (Temporal)
 
 ## Ejecucion
 
-$ Rscript conda_environment_mass_backup_tool.R 
+$ Rscript condaCloner.R 
