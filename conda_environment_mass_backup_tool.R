@@ -1,14 +1,9 @@
 # Conda environment cloner
 
-library(stringr)
-
 # Get environments paths and names
 envs <- system("conda info -e", intern = T)[grepl("home", system("conda info -e", intern = T))]
-envs <- str_replace(envs, "\\*", "")
-envs <- gsub("\\s+", ",", envs)
-envs <- read.table(text = envs, sep = ",")
+envs <- read.table(text = gsub("\\s+", ",", gsub("\\*", "",envs)), sep = ",")
 colnames(envs) <- c("environment_yaml", "path")
-envs$environment_yaml <- paste0(envs$environment_yaml,".yaml")
 
 # Creates output directory for all and every backup
 outdir <- paste0("/home/",
@@ -25,7 +20,7 @@ ifelse(!dir.exists(outdir), dir.create(outdir), FALSE) # creates master backups 
 dir.create(outdir_final)
 
 # YAML files creation
-envs$environment_yaml <- paste0(outdir_final,"/",envs$environment_yaml)
+envs$environment_yaml <- paste0(outdir_final,"/",envs$environment_yaml,".yaml")
 
 cmmnd <- paste("conda env export -p",envs$path," >", envs$environment_yaml )
 

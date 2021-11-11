@@ -11,7 +11,6 @@ lo envia con **scp** a una carpeta en el directorio **home** del usuario en **UB
 
 R
 Rscript
-libreria **stringr**
 
 llaves ssh de los servidores hacia UBMIPORTAL (Temporal)
 
