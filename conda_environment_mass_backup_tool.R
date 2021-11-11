@@ -20,7 +20,7 @@ ifelse(!dir.exists(outdir), dir.create(outdir), FALSE) # creates master backups 
 dir.create(outdir_final)
 
 # YAML files creation
-envs$environment_yaml <- paste0(outdir_final,"/",envs$environment_yaml,".yaml")
+envs$environment_yaml <- paste0(outdir_final,"/",envs$environment_yaml,".yml")
 
 cmmnd <- paste("conda env export -p",envs$path," >", envs$environment_yaml )
 
