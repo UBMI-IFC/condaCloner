@@ -3,12 +3,12 @@
 # Get environments paths and names
 envs <- system("conda info -e", intern = T)[grepl("home", system("conda info -e", intern = T))]
 envs <- read.table(text = gsub("\\s+", ",", gsub("\\*", "",envs)), sep = ",")
-colnames(envs) <- c("environment_yaml", "path")
+colnames(envs) <- c("environment", "path")
 
-# Creates output directory for all and every backup
-outdir <- paste0("/home/",
-                 system("whoami", intern = T),
-                 "/backupsConda")  # REPLACE WITH DEFINITVE DIRECTORY
+# Creates local  output directory for all and every backup
+outdir <- paste0("/UBMInas/SEISbio_conda_env_backups/seisbio_",
+                 system("date +%Y%m%d", intern = T)
+                 )
 
 outdir_final <- paste0(outdir,
                        "/",
@@ -20,14 +20,16 @@ ifelse(!dir.exists(outdir), dir.create(outdir), FALSE) # creates master backups 
 dir.create(outdir_final)
 
 # YAML files creation
-envs$environment_yaml <- paste0(outdir_final,"/",envs$environment_yaml,".yml")
+envs$environment_yaml <- paste0(outdir_final,"/",envs$environment,".yml")
 
-cmmnd <- paste("conda env export -p",envs$path," >", envs$environment_yaml )
+envxport <- paste("conda env export -p",envs$path," >", envs$environment_yaml )
+ymladapt <- paste0("sed -i  's/name: null/name: ", envs$environment,"/;$d' ", envs$environment_yaml )
 
-for( i in 1:length(cmmnd)){
-  system(cmmnd[i],wait = T)
+for( i in 1:length(envxport)){
+  system(envxport[i],wait = T)
+  system(ymladapt[i],wait = T)
 }
 
-# Temporary fix until I can mount this on the NAS
+# Optional remote backup
 
-system(paste("scp -r ", outdir_final ,"ifc:/home/cperalta/conda_backups_yaml"))
+system(paste("scp -r ", outdir_final ,"drone_pi:/home/pi/SEISbio_conda_env_backups/"))
