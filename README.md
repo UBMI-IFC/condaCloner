@@ -5,6 +5,8 @@ Script de R que crea los documentos YAML de los ambientes de anaconda en una maq
 Por ahora crea una carpeta local con la fecha del respaldo en el NAS de la UBMI y lo envia con scp a una carpeta en el home de ubmi-drone 
 
 
+Trabajo en curso... traducir el script a Python y crear varias opciones disponibles para el usuario
+
 ## Requerimientos
 
 R
