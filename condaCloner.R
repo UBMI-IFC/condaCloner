@@ -1,4 +1,6 @@
+# DEPRECATED FINAL VERSION, PLEASE USE PYTHON SCRIPT INSTEAD
 # Conda environment cloner
+# Functional alternative to python script
 
 # Get environments paths and names
 envs <- system("conda info -e", intern = T)[grepl("home", system("conda info -e", intern = T))]
