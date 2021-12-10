@@ -1,21 +1,16 @@
 # condaCloner
 
-Script de R que crea los documentos YAML de los ambientes de anaconda en una maquina en particular diseñado para trabajar con los servidores del IFC. 
+Python script to create a folder with anaconda environments backups as yml files.
 
-Por ahora crea una carpeta local con la fecha del respaldo en el NAS de la UBMI y lo envia con scp a una carpeta en el home de ubmi-drone 
+Currently create updates of base and main conda installation environments, arguments to backup user environments and all anaconda environments to be included 
 
+Creates: backup_folder/host_and_date_folder/yml_files
 
-Trabajo en curso... traducir el script a Python y crear varias opciones disponibles para el usuario
+## Usage
 
-## Requerimientos
-
-R
-
-Rscript
-
-llaves ssh de los servidores hacia ubmi-drone (usuario pi)
+$ python3 condaCloner.py 
 
 
-## Ejecucion
+## Notes
 
-$ Rscript condaCloner.R 
+Command line arguments for : Output directory and backup options to be included
