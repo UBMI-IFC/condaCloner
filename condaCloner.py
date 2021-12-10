@@ -2,7 +2,7 @@
 # -*- coding: us-ascii -*-
 #
 # ------------------------------
-# Name:        InstallSEISbio.py
+# Name:        condaCloner.py
 # Purpose:     Backup all conda environments of a computer as a series of yml files
 #
 # @uthor:      Carlos Alberto Peralta Alvarez cperalta@ifc.unam.mx
