@@ -1,37 +1,52 @@
-# Conda environment cloner (python version)
+#!/usr/bin/python3
+# -*- coding: us-ascii -*-
+#
+# ------------------------------
+# Name:        InstallSEISbio.py
+# Purpose:     Backup all conda environments of a computer as a series of yml files
+#
+# @uthor:      Carlos Alberto Peralta Alvarez cperalta@ifc.unam.mx
+#
+# Created:     Fri 10 Dec 2021
+# Copyright:   (c) Carlos Alberto Peralta Alvarez 2021
+# Licence:     GNU GENERAL PUBLIC LICENSE, Version 3, 29 June 2007
+# ------------------------------
+""" Tool to create a folder of yml files to create an snapshot of a Conda environments on a computer"""
 
-import os
-import subprocess
-import socket
+from subprocess import check_output
+from socket import gethostname
 from datetime import date
-
-OUTPUT_DIR = "/home/cpa/Documentos/testConda/py_conda_tests" # directory for tests
-#OUTPUT_DIR = "/UBMInas/SEISbio_conda_env_backups/tmp"
-SCP_OUTPUT_DIR = "ifc:/home/cperalta/py_conda_tests" # directory for tests
-#SCP_OUTPUT_DIR = "drone_pi:/home/pi/SEISbio_conda_env_backups/tmp/" # scp based remote backup, requires ssh keys on remote server, optional.
+from pathlib import Path
+ 
+OUTPUT_DIR = Path("/home/cperalta/Documents/testConda/py_conda_tests") # directory for tests
+#OUTPUT_DIR = Path("/UBMInas/SEISbio_conda_env_backups/tmp")
 
 # Get date and host info for definitive output dir
-host_id = socket.gethostname()
+host_id = gethostname()
 backup_date = str(date.today()).replace("-","")
 
 # Create output directory
-out_dir = OUTPUT_DIR +"/conda_backup_" + backup_date + "/" + host_id + "_" + backup_date
-
-if not os.path.exists(out_dir):
-    os.makedirs(out_dir)
+out_dir = OUTPUT_DIR / ('conda_backup_' + backup_date)  / (host_id + "_" + backup_date)
+out_dir.mkdir(parents = True, exist_ok = True)
 
 # Get environments paths and names for yml creation
-env =subprocess.Popen(["conda","info" ,"-e"], stdout=subprocess.PIPE)
-out, err = env.communicate() # no se que estoy haciendo aqui pero funciona
-env = out.decode()
+env = check_output(['conda','info','-e']).decode()
 env = env.replace('*','')
 
-env = env[env.rfind('#')+1:].split() # to backup all env
-#env = env[env.find('base'):].split() # to backup main conda installation environments only
+#env = env[env.rfind('#')+1:].split() # to backup all env
+env = env[env.find('base'):].split() # to backup main conda installation environments only
 #env = env[env.rfind('#')+1:env.find('base')-1].split() # to backup user env only
 
 env_path= env[1:len(env):2]
-env_yml= env[0:len(env):2]
-env_yml= [out_dir + "/" + s + ".yml" for s in env_yml]
+env_name= env[0:len(env):2]
+env_yml= [str(out_dir) + "/" + s + ".yml" for s in env_name]
 
+for i in range(len(env_yml)):
+    yml = check_output(['conda', 'env', 'export','-p',env_path[i]]).decode()
+    yml = yml.partition('prefix:')[0]
+    yml = yml.replace('null', env_name[i])
+    with open (env_yml[i], 'w') as f :
+        f.write(yml)
 
+if __name__ == '__main__':
+    main()

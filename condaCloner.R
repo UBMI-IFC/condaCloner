@@ -23,11 +23,12 @@ dir.create(outdir_final)
 envs$environment_yaml <- paste0(outdir_final,"/",envs$environment,".yml")
 
 envxport <- paste("conda env export -p",envs$path," >", envs$environment_yaml )
-ymladapt <- paste0("sed -i  's/name: null/name: ", envs$environment,"/;$d' ", envs$environment_yaml )
+ymladapt <- paste0("sed -i  's/name: null/name: ", envs$environment,"/;$d' ", envs$environment_yaml
+)
 
 for( i in 1:length(envxport)){
-  system(envxport[i],wait = T)
-  system(ymladapt[i],wait = T)
+  print(envxport[i],wait = T)
+  p(ymladapt[i],wait = T)
 }
 
 # Optional remote backup
