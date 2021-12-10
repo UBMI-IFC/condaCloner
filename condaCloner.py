@@ -48,5 +48,5 @@ for i in range(len(env_yml)):
     with open (env_yml[i], 'w') as f :
         f.write(yml)
 
-if __name__ == '__main__':
-    main()
+#if __name__ == '__main__':
+#    main()
